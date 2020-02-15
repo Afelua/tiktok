@@ -1,62 +1,64 @@
 import React from 'react';
-import axios from 'axios';
+import {sendRequest, url} from './constants';
 import Dropzone from 'react-dropzone'
+import personItem from './public/person.svg';
+import movieItem from './public/movie.svg';
 import './App.css';
 
-const config = {
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data; boundary=---WebKitFormBoundary7MA4YWxkTrZu0gW',
-    },
-};
+class App extends React.Component {
 
-export const api = axios.create({
-    baseURL: 'http://192.168.108.26:8080/f1'
-});
+    state = {
+        video: false,
+    };
 
-const getVideo = (files) => {
-    api.post('/', files, config)
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-};
-
-const onDrop = (files) => {
-    const file = new FormData();
-    files.map((item) => {
-        file.append('name', item);
+    setVideo = (video) => this.setState({
+        video
     });
-    return getVideo(file);
-};
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-          <Dropzone onDrop={acceptedFiles => onDrop(acceptedFiles)} multiple>
-              {({getRootProps, getInputProps}) => (
-                  <section>
-                      <div {...getRootProps()}>
-                          <input {...getInputProps()} />
-                          <p>Drag 'n' drop some files here, or click to select files</p>
-                      </div>
-                  </section>
-              )}
-          </Dropzone>
-      </header>
-      <div>
+    onDrop = (files) => {
+        const file = new FormData();
+        files.map((item) => file.append('name', item));
+        return sendRequest(file, this.setVideo, (error) => console.log(error));
+    };
 
-      </div>
-    </div>
-  );
+    renderVideo(){
+        const { video } = this.state;
+        console.log(url + video);
+        if (video) {
+                return (
+                    <video width="280" height="500" controls>
+                        <source src={url + video} type="video/mp4"/>
+                    </video>)
+        }
+        return (
+            <div>
+                <img src={movieItem} className="image"/>
+                <span className="text">Поделиться</span>
+            </div>
+        )
+    }
+    render() {
+        return (<div className="app">
+            <div className="main">
+                <div className="mainContainer">
+                    <Dropzone onDrop={acceptedFiles => this.onDrop(acceptedFiles)} multiple>
+                        {({getRootProps, getInputProps}) => (
+                            <div className="container">
+                                <div {...getRootProps()}>
+                                    <img src={personItem} className="image"/>
+                                    <input {...getInputProps()} />
+                                    <span className="text">Загрузить фотографию</span>
+                                </div>
+                            </div>
+                        )}
+                    </Dropzone>
+                    <div className="container">
+                        {this.renderVideo()}
+                    </div>
+                </div>
+            </div>
+        </div>)
+    }
 }
 
 export default App;
