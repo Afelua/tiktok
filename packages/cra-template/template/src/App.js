@@ -34,7 +34,7 @@ const onDrop = (files) => {
     files.map((item) => {
         file.append('name', item);
     });
-    getVideo(file);
+    return getVideo(file);
 };
 
 function App() {
