@@ -18,15 +18,15 @@ class App extends React.Component {
     };
 
     setVideo = (video) => this.setState({
-        video,
-        isLoading: false
-    });
+            video,
+            isLoading: false
+        });
 
     onDrop = (files) => {
         this.setState({ isLoading: true });
         const file = new FormData();
         files.map((item) => file.append('name', item));
-        return sendRequest(file, this.setVideo, (error) => this.setState(error));
+        return sendRequest(file, this.setVideo, (error) => console.log(error));
     };
 
     renderVideo(){
@@ -34,7 +34,7 @@ class App extends React.Component {
         if (video) {
                 return (
                     <>
-                        <video width="280" height="500" controls>
+                        <video width="280" height="500" controls autoPlay>
                             <source src={url + video} type="video/mp4"/>
                         </video>
                         <CopyToClipboard text={url + video}>
@@ -66,7 +66,7 @@ class App extends React.Component {
         return 'Фотографии успешно загружены, ожидайте';
     }
     render() {
-        const {isLoading, error} = this.state;
+        const {isLoading, error, video} = this.state;
         return (<div className="app">
             <div className="main">
                 <div className="mainContainer">
@@ -76,7 +76,7 @@ class App extends React.Component {
                             {({getRootProps, getInputProps}) => (
                                     <div {...getRootProps()} className="two-photos">
                                         <div className="two-photos__container">
-                                            {isLoading || error ? this.renderText() : <>
+                                            {isLoading || error || video ? this.renderText() : <>
                                                 <img src={personItem} className="image-small" alt=""/>
                                                 <img src={personItem} className="image-small" alt=""/>
                                             </>}
