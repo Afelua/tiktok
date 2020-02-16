@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const url = 'http://192.168.108.26:8080';
+export const url = 'http://192.168.108.26:8080gfdg';
 
 const config = {
     headers: {
@@ -20,6 +20,5 @@ export const sendRequest = (files, onSuccess, onFail) => api.post('/', files, co
     })
     .catch(function (error) {
         // handle error
-        console.log(error);
         return onFail(error)
     });
