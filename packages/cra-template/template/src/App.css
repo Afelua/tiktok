@@ -1,16 +1,10 @@
 .main{
     background: url("public/bg.gif");
-    width: 90%;
-    margin: 55px auto;
     background-size: contain;
 }
 
 .mainContainer{
-    display: flex;
-    justify-content: space-around;
-    width: 70%;
     margin: 0 auto;
-    height: 500px;
     padding: 60px 0;
 }
 .container{
@@ -80,4 +74,27 @@
 
 .loader{
     margin: auto;
+}
+
+@media screen and (min-width: 1024px) {
+    .mainContainer {
+        display: flex;
+        justify-content: space-around;
+        width: 70%;
+    }
+
+    .main{
+        width: 90%;
+        margin: 55px auto;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .container_video{
+        margin: 40px 0 0;
+    }
+
+    .mainContainer{
+        width: 90%;
+    }
 }
